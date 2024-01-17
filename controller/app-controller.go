@@ -9,7 +9,7 @@ import (
 
 
 type AppController interface {
-	Save(ctx *gin.Context) entity.App
+	Save(ctx *gin.Context) error
 	FindAll() []entity.App
 }
 
@@ -22,11 +22,14 @@ func New(service service.AppService) AppController{
 	return &controller{service: service} 
 }
 
-func(contr *controller) Save(ctx *gin.Context)entity.App {
+func(contr *controller) Save(ctx *gin.Context)error {
 	var app entity.App
-	ctx.BindJSON(&app)
+	err := ctx.ShouldBindJSON(&app)
+	if(err != nil) {
+		return err
+	}
 	contr.service.Save(app)
-	return app
+	return nil
 }
 
 func(contr *controller) FindAll()[]entity.App {
