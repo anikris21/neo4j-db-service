@@ -5,6 +5,7 @@ import (
 	"main/controller"
 	"main/middleware"
 	"main/api"
+	"main/docs"
 
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -22,12 +23,12 @@ func main(){
 
 	fmt.Println("Hello world")
 
-	// docs.SwaggerInfo.Title = "Pragmatic Reviews - Video API"
-	// docs.SwaggerInfo.Description = "Pragmatic Reviews - Youtube Video API."
-	// docs.SwaggerInfo.Version = "1.0"
-	// docs.SwaggerInfo.Host = "pragmatic-video-app.herokuapp.com"
-	// docs.SwaggerInfo.BasePath = "/api/v1"
-	// docs.SwaggerInfo.Schemes = []string{"https"}
+	docs.SwaggerInfo.Title = "Neo4j Api"
+	docs.SwaggerInfo.Description = "Neo4j Apis"
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = "localhost:8080"
+	docs.SwaggerInfo.BasePath = "/api/v1"
+	docs.SwaggerInfo.Schemes = []string{"http"}
  
 	
 	server := gin.New()
@@ -36,7 +37,7 @@ func main(){
 
 	appAPI := api.NewAppAPI(appController) 
 
-	apiRoutes := server.Group("/")
+	apiRoutes := server.Group(docs.SwaggerInfo.BasePath)
 	apps := apiRoutes.Group("/apps")
 	{
 			apps.GET("", appAPI.GetApps)

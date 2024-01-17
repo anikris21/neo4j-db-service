@@ -1,0 +1,71 @@
+definitions:
+  dto.Response:
+    properties:
+      message:
+        type: string
+    type: object
+  entity.App:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /apps:
+    get:
+      consumes:
+      - application/json
+      description: Get all the existing apps
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.App'
+            type: array
+      security:
+      - bearerAuth: []
+      summary: List existing apps
+      tags:
+      - apps
+      - list
+    post:
+      consumes:
+      - application/json
+      description: Create a new app
+      parameters:
+      - description: Create App
+        in: body
+        name: video
+        required: true
+        schema:
+          $ref: '#/definitions/entity.App'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Response'
+      security:
+      - bearerAuth: []
+      summary: Create new apps
+      tags:
+      - apps
+      - create
+swagger: "2.0"

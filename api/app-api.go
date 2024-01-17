@@ -2,6 +2,7 @@ package api
 
 import (
 	"main/controller"
+	"main/dto"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -20,14 +21,13 @@ func NewAppAPI(appController controller.AppController) *AppApi {
 
 // GetApps godoc
 // @Security bearerAuth
-// @Summary List existing videos
-// @Description Get all the existing videos
+// @Summary List existing apps
+// @Description Get all the existing apps
 // @Tags apps,list
 // @Accept  json
 // @Produce  json
 // @Success 200 {array} entity.App
 // @Router /apps [get]
-
 func(api *AppApi) GetApps(ctx *gin.Context) {
 	ctx.JSON(200, api.appController.FindAll())
 	
@@ -37,24 +37,23 @@ func(api *AppApi) GetApps(ctx *gin.Context) {
 // @Security bearerAuth
 // @Summary Create new apps
 // @Description Create a new app
-// @Tags videos,create
+// @Tags apps,create
 // @Accept  json
 // @Produce  json
-// @Param video body entity.Video true "Create video"
-// @Success 200 {object} gin.H
-// @Failure 400 {object} gin.H
-// @Failure 401 {object} gin.H
+// @Param video body entity.App true "Create App"
+// @Success 200 {object} dto.Response
+// @Failure 400 {object} dto.Response
+// @Failure 401 {object} dto.Response
 // @Router /apps [post]
- 
 func(api *AppApi) CreateApp(ctx *gin.Context) {
 	err := api.appController.Save(ctx)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),  
+		ctx.JSON(http.StatusBadRequest, &dto.Response{
+			Message: err.Error(),  
 		})
 	} else {
-		ctx.JSON(http.StatusOK, gin.H{
-			"message": "Success!",  
+		ctx.JSON(http.StatusOK, &dto.Response{
+			Message: "Success!",  
 		})
 	}
 } 
